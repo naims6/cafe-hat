@@ -22,7 +22,7 @@ export const restaurantInfo: RestaurantInfo = {
   ],
   social: [
     { label: 'Instagram', href: '#', icon: 'instagram' },
-    { label: 'Facebook', href: '#', icon: 'facebook' },
+    { label: 'Facebook', href: 'https://www.facebook.com/cafehat.dhanbari', icon: 'facebook' },
     { label: 'WhatsApp', href: '#', icon: 'message-circle' },
   ],
   mapUrl: 'https://maps.app.goo.gl/tLt2VftJ9eZgrUda6',

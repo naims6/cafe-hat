@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import Image from 'next/image';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/data/navigation';
 import { restaurantInfo } from '@/data/restaurant';
 import { triggerToast } from '@/lib/toast';
+import { Logo } from '@/components/shared/Logo';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,13 +21,9 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const id = href.replace('#', '');
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const handleNavClick = (_e: React.MouseEvent<HTMLAnchorElement>, _href: string) => {
+    // Close mobile menu if open — native smooth scroll handles the rest via CSS
+    setMobileOpen(false);
   };
 
   const handleOrderClick = () => {
@@ -55,34 +51,9 @@ export function Navbar() {
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
-            className="group flex items-center gap-2.5"
+            className="group flex items-center"
           >
-            <div className="relative h-9 w-9 sm:h-10 sm:w-10 overflow-hidden rounded-full border-2 border-espresso/15 bg-white shadow-xs transition-transform duration-300 group-hover:scale-105">
-              <Image
-                src="/logo.jpg"
-                alt="Cafe Hat Logo"
-                width={40}
-                height={40}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </div>
-            <span
-              className={cn(
-                'text-2xl font-black tracking-tight transition-colors duration-300',
-                scrolled ? 'text-espresso' : 'text-espresso'
-              )}
-            >
-              CAFE
-            </span>
-            <span
-              className={cn(
-                'text-2xl font-black tracking-tight transition-colors duration-300',
-                scrolled ? 'text-tomato' : 'text-tomato'
-              )}
-            >
-              HAT
-            </span>
+            <Logo size="md" />
           </a>
 
           {/* Desktop nav */}
@@ -149,19 +120,7 @@ export function Navbar() {
               className="absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-cream"
             >
               <div className="flex items-center justify-between border-b border-espresso/10 px-5 py-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="relative h-9 w-9 overflow-hidden rounded-full border border-espresso/15 bg-white">
-                    <Image
-                      src="/logo.jpg"
-                      alt="Cafe Hat Logo"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <span className="text-2xl font-black text-espresso">
-                    CAFE <span className="text-tomato">HAT</span>
-                  </span>
-                </div>
+                <Logo size="md" />
                 <button
                   onClick={() => setMobileOpen(false)}
                   className="flex h-10 w-10 items-center justify-center text-espresso"
@@ -175,10 +134,7 @@ export function Navbar() {
                   <motion.a
                     key={link.href}
                     href={link.href}
-                    onClick={(e) => {
-                      setMobileOpen(false);
-                      handleNavClick(e, link.href);
-                    }}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.05 * i + 0.1 }}
