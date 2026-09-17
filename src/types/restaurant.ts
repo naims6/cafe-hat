@@ -88,3 +88,16 @@ export interface MarqueeItem {
   text: string;
   symbol: string;
 }
+
+export type PaymentProvider = 'bkash' | 'nagad' | 'rocket';
+
+export interface MarathonRegistration {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  provider: PaymentProvider;
+  transactionId: string;
+  registeredAt: string;
+  verified: boolean;
+}

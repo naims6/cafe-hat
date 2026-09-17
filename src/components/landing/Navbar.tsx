@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -22,7 +23,6 @@ export function Navbar() {
   }, []);
 
   const handleNavClick = (_e: React.MouseEvent<HTMLAnchorElement>, _href: string) => {
-    // Close mobile menu if open — native smooth scroll handles the rest via CSS
     setMobileOpen(false);
   };
 
@@ -46,50 +46,60 @@ export function Navbar() {
             : 'bg-transparent py-4 sm:py-5'
         )}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 sm:px-6 lg:px-8">
-          {/* Logo Brand */}
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-1 sm:px-6 lg:px-8">
+          {/* Logo */}
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
-            className="group flex items-center"
+            className="group flex shrink-0 items-center"
           >
             <Logo size="md" />
           </a>
 
-          {/* Desktop nav */}
-          <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={cn(
-                  'relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-300',
-                  scrolled
+          {/* Desktop nav — visible at lg+ */}
+          <div className="hidden items-center gap-0.5 lg:flex">
+            {navLinks.map((link) => {
+              const isPage = link.href.startsWith('/');
+              const isMarathon = link.label === 'Marathon';
+
+              const linkClass = cn(
+                'relative px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest transition-all duration-200',
+                isMarathon
+                  ? 'border border-tomato text-tomato hover:bg-tomato hover:text-cream'
+                  : scrolled
                     ? 'text-espresso/70 hover:text-tomato'
                     : 'text-espresso/80 hover:text-tomato'
-                )}
-              >
-                {link.label}
-              </a>
-            ))}
+              );
+
+              return isPage ? (
+                <Link key={link.href} href={link.href} className={linkClass}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={linkClass}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
 
-          {/* CTA + mobile toggle */}
-          <div className="flex items-center gap-3">
+          {/* Right side: Order Now (hidden on smaller screens) + hamburger */}
+          <div className="flex shrink-0 items-center gap-3">
             <button
               onClick={handleOrderClick}
-              className="group hidden items-center gap-2 bg-tomato px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg sm:inline-flex cursor-pointer"
+              className="group hidden items-center gap-2 bg-tomato px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg lg:inline-flex cursor-pointer"
             >
               Order Now
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </button>
             <button
               onClick={() => setMobileOpen(true)}
-              className={cn(
-                'flex h-10 w-10 items-center justify-center transition-colors lg:hidden',
-                scrolled ? 'text-espresso' : 'text-espresso'
-              )}
+              className="flex h-10 w-10 items-center justify-center text-espresso transition-colors lg:hidden"
               aria-label="Open menu"
             >
               <Menu className="h-6 w-6" />
@@ -98,7 +108,7 @@ export function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile menu */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -129,21 +139,47 @@ export function Navbar() {
                   <X className="h-6 w-6" />
                 </button>
               </div>
-              <div className="flex flex-1 flex-col gap-1 px-5 py-6">
-                {navLinks.map((link, i) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 * i + 0.1 }}
-                    className="border-b border-espresso/5 py-4 text-2xl font-bold text-espresso transition-colors hover:text-tomato"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
+
+              <div className="flex flex-1 flex-col gap-1 overflow-y-auto px-5 py-6">
+                {navLinks.map((link, i) => {
+                  const isPage = link.href.startsWith('/');
+                  const isMarathon = link.label === 'Marathon';
+                  const mobileLinkClass = cn(
+                    'block border-b border-espresso/5 py-4 text-2xl font-bold transition-colors hover:text-tomato',
+                    isMarathon ? 'text-tomato' : 'text-espresso'
+                  );
+
+                  return isPage ? (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 * i + 0.1 }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={mobileLinkClass}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 * i + 0.1 }}
+                      className={mobileLinkClass}
+                    >
+                      {link.label}
+                    </motion.a>
+                  );
+                })}
               </div>
+
               <div className="border-t border-espresso/10 px-5 py-6">
                 <button
                   onClick={() => {
