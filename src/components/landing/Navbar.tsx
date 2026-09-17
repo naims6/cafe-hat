@@ -88,7 +88,7 @@ export function Navbar() {
               href="#reservation"
               className="group hidden items-center gap-2 bg-tomato px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg sm:inline-flex"
             >
-              Reserve a Table
+              Order Now
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
             <button
@@ -169,7 +169,7 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className="flex w-full items-center justify-center gap-2 bg-tomato px-5 py-3.5 text-base font-bold uppercase tracking-wider text-cream"
                 >
-                  Reserve a Table →
+                  Order Now →
                 </a>
                 <a
                   href={restaurantInfo.phoneHref}

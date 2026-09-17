@@ -8,6 +8,7 @@ import { MenuFilter, type FilterCategory } from './MenuFilter';
 
 const filterCategories: { label: string; value: FilterCategory }[] = [
   { label: 'All', value: 'all' },
+  { label: 'Popular', value: 'popular' },
   { label: 'Food', value: 'food' },
   { label: 'Coffee', value: 'coffee' },
   { label: 'Drinks', value: 'drinks' },
@@ -23,40 +24,43 @@ export function MenuGrid({ items }: MenuGridProps) {
 
   const filtered = useMemo(() => {
     if (active === 'all') return items;
+    if (active === 'popular') return items.filter((item) => item.popular || item.featured);
     return items.filter((item) => item.category === active);
   }, [items, active]);
 
-  // Assign sizes based on featured flag and position
-  const sizedItems = useMemo(() => {
-    return filtered.map((item, index) => {
-      if (item.featured) return { item, size: 'large' as const };
-      if (index === 1 || index === 4) return { item, size: 'medium' as const };
-      return { item, size: 'small' as const };
-    });
-  }, [filtered]);
-
   return (
-    <div>
+    <div className="space-y-8">
+      {/* Category Filter Pills */}
       <MenuFilter categories={filterCategories} active={active} onChange={setActive} />
+
+      {/* Uniform Aligned Menu Grid */}
       <motion.div
         layout
-        className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch"
       >
         <AnimatePresence mode="popLayout">
-          {sizedItems.map(({ item, size }) => (
+          {filtered.map((item) => (
             <motion.div
               key={item.id}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
+              className="flex"
             >
-              <MenuCard item={item} size={size} />
+              <MenuCard item={item} className="w-full" />
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {/* Empty State */}
+      {filtered.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-espresso/20 py-12 text-center text-espresso/60 font-medium">
+          No items found in this category.
+        </div>
+      )}
     </div>
   );
 }
