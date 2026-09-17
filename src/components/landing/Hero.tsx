@@ -2,9 +2,8 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
-import { MapPin } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Sparkles, Heart } from 'lucide-react';
 import type { HeroData } from '@/types/restaurant';
-import { DecorativeShape } from '@/components/shared/DecorativeShape';
 
 interface HeroProps {
   data: HeroData;
@@ -17,164 +16,168 @@ export function Hero({ data }: HeroProps) {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12, delayChildren: 0.1 },
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.1,
+        delayChildren: 0.1,
+      },
     },
   };
 
   const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+    },
   };
 
   return (
-    <section id="home" className="relative overflow-hidden bg-cream pt-28 pb-16 sm:pt-32 lg:pt-40 lg:pb-24">
-      {/* Background decorative shapes */}
+    <section id="home" className="relative overflow-hidden bg-cream pt-28 pb-16 sm:pt-36 lg:pt-40 lg:pb-28">
+      {/* Soft ambient background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Large blue circle top-right */}
-        <div className="absolute -right-32 -top-20 h-96 w-96 rounded-full bg-royal/10 blur-3xl" />
-        {/* Tomato organic blob bottom-left */}
-        <div
-          className="absolute -left-20 bottom-0 h-80 w-80 bg-tomato/8 blur-3xl"
-          style={{ borderRadius: '42% 58% 63% 37% / 41% 44% 56% 59%' }}
-        />
+        <div className="absolute -right-20 -top-20 h-[450px] w-[450px] rounded-full bg-tomato/8 blur-[100px]" />
+        <div className="absolute -left-20 bottom-10 h-[400px] w-[400px] rounded-full bg-sunny/15 blur-[90px]" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-5 sm:px-6 lg:grid-cols-12 lg:gap-6 lg:px-8">
-        {/* Left: Typography column */}
+      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
+        {/* Left Column: Typography & CTAs */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
           className="relative z-10 lg:col-span-6"
         >
-          {/* Location badge */}
-          <motion.div variants={item} className="mb-6 inline-flex items-center gap-2 bg-royal/10 px-4 py-2 text-sm font-bold uppercase tracking-wider text-royal">
-            <MapPin className="h-4 w-4" />
-            {data.location}
+          {/* Location & Brand Badge */}
+          <motion.div variants={item} className="mb-6 inline-flex items-center gap-2 rounded-full border border-espresso/10 bg-white/80 px-4 py-2 shadow-xs backdrop-blur-sm">
+            <MapPin className="h-4 w-4 text-tomato" />
+            <span className="text-xs font-extrabold uppercase tracking-wider text-espresso">
+              {data.location}
+            </span>
           </motion.div>
 
           {/* Headline */}
           <div className="space-y-1">
-            {data.headlineLines.map((line, i) => (
-              <motion.h1
-                key={i}
-                variants={item}
-                className="text-[3.5rem] font-black leading-[0.95] tracking-tight text-espresso sm:text-7xl lg:text-8xl"
-              >
-                {line}
-              </motion.h1>
-            ))}
+            <motion.h1
+              variants={item}
+              className="text-5xl font-black leading-[1.02] tracking-tight text-espresso sm:text-7xl lg:text-8xl"
+            >
+              GOOD FOOD.
+            </motion.h1>
+
+            <motion.h1
+              variants={item}
+              className="text-5xl font-black leading-[1.02] tracking-tight text-tomato sm:text-7xl lg:text-8xl"
+            >
+              GREAT MOOD.
+            </motion.h1>
           </div>
 
-          {/* Subheadline */}
-          <motion.p variants={item} className="mt-6 max-w-md text-xl leading-relaxed text-espresso/60 sm:text-2xl">
-            {data.subheadline}
+          {/* Subheadline Description */}
+          <motion.p
+            variants={item}
+            className="mt-6 max-w-lg text-lg leading-relaxed text-espresso/70 sm:text-xl"
+          >
+            A little taste of happiness in Dhanbari. Freshly prepared artisanal coffee, gourmet pizzas, sizzlers, and cozy dining moments.
           </motion.p>
 
-          {/* CTAs */}
-          <motion.div variants={item} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* Call to Action Buttons */}
+          <motion.div
+            variants={item}
+            className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center"
+          >
             <a
               href={data.primaryCta.href}
-              className="group inline-flex items-center justify-center gap-2 bg-tomato px-7 py-4 text-base font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-xl"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-tomato px-8 py-4 text-sm font-extrabold uppercase tracking-wider text-cream shadow-md transition-all duration-300 hover:bg-tomato-dark hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
             >
-              {data.primaryCta.label}
-              <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+              <span>{data.primaryCta.label}</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
+
             <a
               href={data.secondaryCta.href}
-              className="group inline-flex items-center justify-center gap-2 border-2 border-espresso px-7 py-4 text-base font-bold uppercase tracking-wider text-espresso transition-all duration-300 hover:bg-espresso hover:text-cream"
+              className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-espresso bg-white/60 px-8 py-4 text-sm font-extrabold uppercase tracking-wider text-espresso transition-all duration-300 hover:bg-espresso hover:text-cream hover:shadow-md"
             >
-              {data.secondaryCta.label}
+              <span>{data.secondaryCta.label}</span>
             </a>
           </motion.div>
 
-          {/* Trust line */}
-          <motion.div variants={item} className="mt-10 flex items-center gap-4">
+          {/* Customer Reviews & Trust Line */}
+          <motion.div
+            variants={item}
+            className="mt-10 flex items-center gap-4 border-t border-espresso/10 pt-6"
+          >
             <div className="flex -space-x-2">
-              {[0, 1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="h-9 w-9 rounded-full border-2 border-cream"
-                  style={{
-                    backgroundColor: ['#F04438', '#1557D6', '#FFC928', '#3E9B63'][i],
-                  }}
-                />
-              ))}
-            </div>
-            <div>
-              <div className="flex items-center gap-0.5 text-sunny">
-                {'★★★★★'.split('').map((s, i) => (
-                  <span key={i} className="text-lg">{s}</span>
-                ))}
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cream bg-tomato text-xs font-bold text-white shadow-xs">
+                C
               </div>
-              <p className="text-sm font-semibold text-espresso/60">Loved by locals in Dhanbari</p>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cream bg-royal text-xs font-bold text-white shadow-xs">
+                A
+              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cream bg-sunny text-xs font-bold text-espresso shadow-xs">
+                F
+              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cream bg-fresh text-xs font-bold text-white shadow-xs">
+                E
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-sunny text-sunny" />
+                ))}
+                <span className="ml-1 text-sm font-extrabold text-espresso">4.9 / 5.0</span>
+              </div>
+              <p className="text-xs font-bold text-espresso/60">
+                Loved by 500+ food lovers in Dhanbari
+              </p>
             </div>
           </motion.div>
         </motion.div>
 
-        {/* Right: Image collage column */}
+        {/* Right Column: Hero Image Frame */}
         <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="relative lg:col-span-6"
         >
-          <div className="relative">
-            {/* Organic red shape behind image */}
-            <div
-              className="absolute -right-4 -top-6 h-[110%] w-[90%] bg-tomato"
-              style={{ borderRadius: '42% 58% 63% 37% / 47% 44% 56% 53%' }}
-            />
+          <div className="relative mx-auto max-w-lg lg:max-w-none">
+            {/* Subtle soft backdrop accent card */}
+            <div className="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-tr from-tomato/20 via-sunny/20 to-royal/10 blur-xl opacity-70" />
 
-            {/* Main image */}
-            <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-square lg:aspect-[4/5]">
-              <Image
-                src={data.image}
-                alt={data.imageAlt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
+            {/* Main Image Container */}
+            <div className="relative overflow-hidden rounded-[2.2rem] border-4 border-white bg-white shadow-2xl">
+              <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[4/3]">
+                <Image
+                  src={data.image}
+                  alt={data.imageAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+
+              {/* Clean Floating Info Badge */}
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-2xl border border-espresso/5 bg-white/95 p-3.5 backdrop-blur-md shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-tomato/10 text-tomato">
+                    <Heart className="h-5 w-5 fill-tomato" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-extrabold text-espresso">{data.badge}</p>
+                    <p className="text-xs font-medium text-espresso/60">Crafted with Fresh Ingredients</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 rounded-full bg-cream-dark px-3 py-1.5 text-xs font-extrabold text-espresso">
+                  <Star className="h-3.5 w-3.5 fill-sunny text-sunny" />
+                  <span>4.9 ★</span>
+                </div>
+              </div>
             </div>
-
-            {/* Yellow badge - top left */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, type: 'spring', bounce: 0.5 }}
-              className="absolute -left-3 top-8 flex h-24 w-24 flex-col items-center justify-center rounded-full bg-sunny text-center shadow-xl sm:-left-6 sm:h-28 sm:w-28"
-            >
-              <span className="text-xs font-black uppercase leading-tight text-espresso">{data.badge}</span>
-              <span className="text-2xl">★</span>
-            </motion.div>
-
-            {/* Blue decorative circle */}
-            <div className="absolute -bottom-6 -right-3 h-20 w-20 rounded-full border-4 border-royal bg-cream sm:h-24 sm:w-24" />
-
-            {/* Small star decorations */}
-            <DecorativeShape
-              kind="star"
-              color="#FF7A30"
-              size={32}
-              float
-              className="absolute -right-8 top-1/3 z-20"
-            />
-            <DecorativeShape
-              kind="sparkle"
-              color="#1557D6"
-              size={24}
-              float
-              className="absolute -left-4 bottom-12 z-20"
-            />
-
-            {/* Dots decoration */}
-            <DecorativeShape
-              kind="dots"
-              color="#3E9B63"
-              size={48}
-              className="absolute right-8 -bottom-4 z-20"
-            />
           </div>
         </motion.div>
       </div>

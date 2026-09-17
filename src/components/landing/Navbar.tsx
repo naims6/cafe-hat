@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/data/navigation';
@@ -28,13 +29,23 @@ export function Navbar() {
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-all duration-500',
           scrolled
-            ? 'bg-cream/90 shadow-[0_4px_30px_rgba(33,26,23,0.08)] backdrop-blur-md'
-            : 'bg-transparent'
+            ? 'bg-cream/95 shadow-[0_4px_30px_rgba(33,26,23,0.08)] backdrop-blur-md py-3'
+            : 'bg-transparent py-4 sm:py-5'
         )}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <a href="#home" className="group flex items-center gap-2">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 sm:px-6 lg:px-8">
+          {/* Logo Brand */}
+          <a href="#home" className="group flex items-center gap-2.5">
+            <div className="relative h-9 w-9 sm:h-10 sm:w-10 overflow-hidden rounded-full border-2 border-espresso/15 bg-white shadow-xs transition-transform duration-300 group-hover:scale-105">
+              <Image
+                src="/logo.jpg"
+                alt="Cafe Hat Logo"
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </div>
             <span
               className={cn(
                 'text-2xl font-black tracking-tight transition-colors duration-300',
@@ -42,16 +53,6 @@ export function Navbar() {
               )}
             >
               CAFE
-            </span>
-            <span
-              className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-full text-sm font-black transition-colors duration-300',
-                scrolled ? 'bg-tomato text-cream' : 'bg-tomato text-cream'
-              )}
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-                <path d="M12 2C7.6 2 4 5.6 4 10v6c0 1.1.9 2 2 2h1v-8H6v-2c0-3.3 2.7-6 6-6s6 2.7 6 6v2h-1v8h1c1.1 0 2-.9 2-2v-6c0-4.4-3.6-8-8-8z" />
-              </svg>
             </span>
             <span
               className={cn(
@@ -126,9 +127,19 @@ export function Navbar() {
               className="absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-cream"
             >
               <div className="flex items-center justify-between border-b border-espresso/10 px-5 py-4">
-                <span className="text-2xl font-black text-espresso">
-                  CAFE <span className="text-tomato">HAT</span>
-                </span>
+                <div className="flex items-center gap-2.5">
+                  <div className="relative h-9 w-9 overflow-hidden rounded-full border border-espresso/15 bg-white">
+                    <Image
+                      src="/logo.jpg"
+                      alt="Cafe Hat Logo"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <span className="text-2xl font-black text-espresso">
+                    CAFE <span className="text-tomato">HAT</span>
+                  </span>
+                </div>
                 <button
                   onClick={() => setMobileOpen(false)}
                   className="flex h-10 w-10 items-center justify-center text-espresso"

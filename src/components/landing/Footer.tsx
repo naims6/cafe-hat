@@ -53,14 +53,18 @@ export function Footer() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
-            <div className="flex items-center gap-2">
-              <span className="text-4xl font-black text-cream">CAFE</span>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-tomato">
-                <svg viewBox="0 0 24 24" className="h-6 w-6 text-cream" fill="currentColor">
-                  <path d="M12 2C7.6 2 4 5.6 4 10v6c0 1.1.9 2 2 2h1v-8H6v-2c0-3.3 2.7-6 6-6s6 2.7 6 6v2h-1v8h1c1.1 0 2-.9 2-2v-6c0-4.4-3.6-8-8-8z" />
-                </svg>
-              </span>
-              <span className="text-4xl font-black text-tomato">HAT</span>
+            <div className="flex items-center gap-3">
+              <div className="relative h-11 w-11 overflow-hidden rounded-full p-0.5 bg-white ring-2 ring-tomato/30 shadow-md">
+                <img
+                  src="/logo.jpg"
+                  alt="Cafe Hat Logo"
+                  className="h-full w-full rounded-full object-cover"
+                />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-3xl sm:text-4xl font-black text-cream">CAFE</span>
+                <span className="text-3xl sm:text-4xl font-black text-tomato">HAT</span>
+              </div>
             </div>
 
             <p className="mt-6 max-w-sm text-lg leading-relaxed text-cream/60">
