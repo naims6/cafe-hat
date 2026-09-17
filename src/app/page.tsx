@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/landing/Navbar";
+import { MarathonBar } from "@/components/shared/MarathonBar";
 import { Hero } from "@/components/landing/Hero";
 import { Marquee } from "@/components/landing/Marquee";
 import { FeaturedMenu } from "@/components/landing/FeaturedMenu";
@@ -25,7 +26,10 @@ export default function Home() {
     <main className="min-h-screen bg-cream">
       <ToastContainer />
       <ScrollToTop />
-      <Navbar />
+      <div className="fixed inset-x-0 top-0 z-50">
+        <MarathonBar />
+        <Navbar />
+      </div>
       <Hero data={heroData} />
       <Marquee items={marqueeItems} />
       <FeaturedMenu items={featuredMenuItems} />
