@@ -11,6 +11,7 @@ import { ReservationCTA } from "@/components/landing/ReservationCTA";
 import { Location } from "@/components/landing/Location";
 import { Footer } from "@/components/landing/Footer";
 import { ToastContainer } from "@/components/shared/ToastContainer";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 
 import { heroData } from "@/data/hero";
 import { marqueeItems } from "@/data/marquee";
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-cream">
       <ToastContainer />
+      <ScrollToTop />
       <Navbar />
       <Hero data={heroData} />
       <Marquee items={marqueeItems} />
