@@ -1,9 +1,41 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-# This is NOT the Next.js you know
+## Project: Cafe Hat Restaurant Management System
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Cafe Hat is a modern restaurant/cafe website and, eventually, a complete restaurant management system.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+Restaurant:
+- Name: Cafe Hat
+- Location: Dhanbari, Tangail, Bangladesh
+- Website type: Restaurant / Cafe
+- Primary goal: Premium, colorful, memorable restaurant experience
 
-<!-- END:nextjs-agent-rules -->
+---
+
+# 1. Core Development Philosophy
+
+This project must prioritize:
+
+1. Visual quality
+2. Maintainable architecture
+3. Reusable components
+4. Data-driven UI
+5. Accessibility
+6. Performance
+7. Responsive design
+8. Type safety
+9. Simple and understandable code
+
+Do not sacrifice visual quality for excessive abstraction.
+
+Do not sacrifice maintainability for visual effects.
+
+The website should feel professionally designed, not AI-generated.
+
+---
+
+# 2. Package Manager
+
+This project uses PNPM.
+
+ALWAYS use PNPM.

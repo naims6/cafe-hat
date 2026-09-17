@@ -1,12 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Menu, X, Phone } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { navLinks } from "@/data/navigation";
-import { restaurantInfo } from "@/data/restaurant";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Menu, X, Phone } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { navLinks } from '@/data/navigation';
+import { restaurantInfo } from '@/data/restaurant';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,8 +15,8 @@ export function Navbar() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
@@ -27,10 +26,10 @@ export function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+          'fixed inset-x-0 top-0 z-50 transition-all duration-500',
           scrolled
-            ? "bg-cream/90 shadow-[0_4px_30px_rgba(33,26,23,0.08)] backdrop-blur-md"
-            : "bg-transparent",
+            ? 'bg-cream/90 shadow-[0_4px_30px_rgba(33,26,23,0.08)] backdrop-blur-md'
+            : 'bg-transparent'
         )}
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8">
@@ -38,16 +37,16 @@ export function Navbar() {
           <a href="#home" className="group flex items-center gap-2">
             <span
               className={cn(
-                "text-2xl font-black tracking-tight transition-colors duration-300",
-                scrolled ? "text-espresso" : "text-espresso",
+                'text-2xl font-black tracking-tight transition-colors duration-300',
+                scrolled ? 'text-espresso' : 'text-espresso'
               )}
             >
               CAFE
             </span>
             <span
               className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-full text-sm font-black transition-colors duration-300",
-                scrolled ? "bg-tomato text-cream" : "bg-tomato text-cream",
+                'flex h-8 w-8 items-center justify-center rounded-full text-sm font-black transition-colors duration-300',
+                scrolled ? 'bg-tomato text-cream' : 'bg-tomato text-cream'
               )}
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
@@ -56,8 +55,8 @@ export function Navbar() {
             </span>
             <span
               className={cn(
-                "text-2xl font-black tracking-tight transition-colors duration-300",
-                scrolled ? "text-tomato" : "text-tomato",
+                'text-2xl font-black tracking-tight transition-colors duration-300',
+                scrolled ? 'text-tomato' : 'text-tomato'
               )}
             >
               HAT
@@ -71,10 +70,10 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-300",
+                  'relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-300',
                   scrolled
-                    ? "text-espresso/70 hover:text-tomato"
-                    : "text-espresso/80 hover:text-tomato",
+                    ? 'text-espresso/70 hover:text-tomato'
+                    : 'text-espresso/80 hover:text-tomato'
                 )}
               >
                 {link.label}
@@ -89,15 +88,13 @@ export function Navbar() {
               className="group hidden items-center gap-2 bg-tomato px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg sm:inline-flex"
             >
               Reserve a Table
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
             <button
               onClick={() => setMobileOpen(true)}
               className={cn(
-                "flex h-10 w-10 items-center justify-center transition-colors lg:hidden",
-                scrolled ? "text-espresso" : "text-espresso",
+                'flex h-10 w-10 items-center justify-center transition-colors lg:hidden',
+                scrolled ? 'text-espresso' : 'text-espresso'
               )}
               aria-label="Open menu"
             >
@@ -122,10 +119,10 @@ export function Navbar() {
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
-              initial={{ x: "100%" }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", duration: 0.4, bounce: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', duration: 0.4, bounce: 0 }}
               className="absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-cream"
             >
               <div className="flex items-center justify-between border-b border-espresso/10 px-5 py-4">

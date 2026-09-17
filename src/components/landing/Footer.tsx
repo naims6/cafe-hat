@@ -1,21 +1,34 @@
-"use client";
+'use client';
 
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  Instagram,
-  Facebook,
-  MessageCircle,
-  MapPin,
-  Phone,
-} from "lucide-react";
-import { navLinks } from "@/data/navigation";
-import { restaurantInfo } from "@/data/restaurant";
-import { Container } from "@/components/shared/Container";
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { MessageCircle, MapPin, Phone } from 'lucide-react';
+import { navLinks } from '@/data/navigation';
+import { restaurantInfo } from '@/data/restaurant';
+import { Container } from '@/components/shared/Container';
 
-const socialIcons: Record<string, typeof Instagram> = {
-  instagram: Instagram,
-  facebook: Facebook,
-  "message-circle": MessageCircle,
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+const socialIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+  instagram: InstagramIcon,
+  facebook: FacebookIcon,
+  'message-circle': MessageCircle,
 };
 
 export function Footer() {
@@ -43,11 +56,7 @@ export function Footer() {
             <div className="flex items-center gap-2">
               <span className="text-4xl font-black text-cream">CAFE</span>
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-tomato">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-6 w-6 text-cream"
-                  fill="currentColor"
-                >
+                <svg viewBox="0 0 24 24" className="h-6 w-6 text-cream" fill="currentColor">
                   <path d="M12 2C7.6 2 4 5.6 4 10v6c0 1.1.9 2 2 2h1v-8H6v-2c0-3.3 2.7-6 6-6s6 2.7 6 6v2h-1v8h1c1.1 0 2-.9 2-2v-6c0-4.4-3.6-8-8-8z" />
                 </svg>
               </span>
@@ -65,7 +74,7 @@ export function Footer() {
             {/* Social */}
             <div className="mt-6 flex gap-3">
               {restaurantInfo.social.map((s) => {
-                const Icon = socialIcons[s.icon] ?? Instagram;
+                const Icon = socialIcons[s.icon] ?? InstagramIcon;
                 return (
                   <a
                     key={s.label}
@@ -87,9 +96,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h3 className="text-sm font-bold uppercase tracking-wider text-sunny">
-              Navigation
-            </h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-sunny">Navigation</h3>
             <ul className="mt-4 space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -111,22 +118,15 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-sm font-bold uppercase tracking-wider text-sunny">
-              Contact
-            </h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-sunny">Contact</h3>
             <ul className="mt-4 space-y-3">
               <li className="flex items-start gap-2 text-cream/60">
                 <MapPin className="h-5 w-5 shrink-0 text-tomato" />
-                <span>
-                  {restaurantInfo.address}, {restaurantInfo.country}
-                </span>
+                <span>{restaurantInfo.address}, {restaurantInfo.country}</span>
               </li>
               <li className="flex items-start gap-2 text-cream/60">
                 <Phone className="h-5 w-5 shrink-0 text-tomato" />
-                <a
-                  href={restaurantInfo.phoneHref}
-                  className="transition-colors hover:text-cream"
-                >
+                <a href={restaurantInfo.phoneHref} className="transition-colors hover:text-cream">
                   {restaurantInfo.phone}
                 </a>
               </li>
@@ -147,8 +147,7 @@ export function Footer() {
               © {new Date().getFullYear()} Cafe Hat. All rights reserved.
             </p>
             <p className="text-sm text-cream/40">
-              Made with <span className="text-tomato">♥</span> in Dhanbari,
-              Tangail
+              Made with <span className="text-tomato">♥</span> in Dhanbari, Tangail
             </p>
           </div>
         </div>
