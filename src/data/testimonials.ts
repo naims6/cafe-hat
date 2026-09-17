@@ -25,4 +25,28 @@ export const testimonials: Testimonial[] = [
     accentColor: '#FFC928',
     textColor: '#211A17',
   },
+  {
+    id: 't4',
+    name: 'Razia Begum',
+    rating: 5,
+    text: 'Ordered takeaway for a family dinner and everyone loved it. The portions are generous and the packaging keeps everything hot. Will definitely order again.',
+    accentColor: '#2D6A4F',
+    textColor: '#FFF8EA',
+  },
+  {
+    id: 't5',
+    name: 'Mahmud Karim',
+    rating: 5,
+    text: 'Came in on a whim one evening and ended up staying for two hours. The coffee is proper and the playlist was just right. Hidden gem of Dhanbari.',
+    accentColor: '#7B2D8B',
+    textColor: '#FFF8EA',
+  },
+  {
+    id: 't6',
+    name: 'Sumaiya Akter',
+    rating: 5,
+    text: 'Celebrated my birthday here and the team made it so special without even being asked. Great food, great people. This place has a real soul to it.',
+    accentColor: '#F04438',
+    textColor: '#FFF8EA',
+  },
 ];

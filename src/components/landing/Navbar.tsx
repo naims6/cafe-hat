@@ -21,6 +21,15 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleOrderClick = () => {
     triggerToast(
       'Online Ordering Coming Soon!',
@@ -43,7 +52,11 @@ export function Navbar() {
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 sm:px-6 lg:px-8">
           {/* Logo Brand */}
-          <a href="#home" className="group flex items-center gap-2.5">
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, '#home')}
+            className="group flex items-center gap-2.5"
+          >
             <div className="relative h-9 w-9 sm:h-10 sm:w-10 overflow-hidden rounded-full border-2 border-espresso/15 bg-white shadow-xs transition-transform duration-300 group-hover:scale-105">
               <Image
                 src="/logo.jpg"
@@ -78,6 +91,7 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={cn(
                   'relative px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors duration-300',
                   scrolled
@@ -161,7 +175,10 @@ export function Navbar() {
                   <motion.a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => {
+                      setMobileOpen(false);
+                      handleNavClick(e, link.href);
+                    }}
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.05 * i + 0.1 }}
