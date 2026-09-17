@@ -36,11 +36,11 @@ export function Navbar() {
   return (
     <>
       <motion.nav
-        initial={shouldReduceMotion ? false : { y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial={shouldReduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
         className={cn(
-          'inset-x-0 top-0 z-50 transition-all duration-500',
+          'w-full transition-all duration-500',
           scrolled
             ? 'bg-cream/95 shadow-[0_4px_30px_rgba(33,26,23,0.08)] backdrop-blur-md py-3'
             : 'bg-transparent py-4 sm:py-5'

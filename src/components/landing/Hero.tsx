@@ -41,7 +41,7 @@ export function Hero({ data }: HeroProps) {
   };
 
   return (
-    <section id="home" className="relative overflow-hidden bg-cream pt-28 pb-16 sm:pt-36 lg:pt-40 lg:pb-28">
+    <section id="home" className="relative overflow-hidden bg-cream pt-37 pb-16 sm:pt-36 lg:pt-40 lg:pb-28">
       {/* Soft ambient background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -right-20 -top-20 h-[450px] w-[450px] rounded-full bg-tomato/8 blur-[100px]" />

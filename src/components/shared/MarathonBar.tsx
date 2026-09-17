@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Timer, X } from 'lucide-react';
 
 // ── Set your marathon date here ──────────────────────────────────────────────
-const MARATHON_DATE = new Date('2026-10-15T07:00:00+06:00');
+const MARATHON_DATE = new Date('2026-11-28T07:00:00+06:00');
 // ────────────────────────────────────────────────────────────────────────────
 
 interface TimeLeft {
@@ -31,17 +31,26 @@ function pad(n: number) {
 }
 
 export function MarathonBar() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft());
+  // null = not yet mounted on client (avoids SSR/client hydration mismatch).
+  // The interval sets it to a real TimeLeft object on the first client tick.
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    const id = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
+    const tick = () => setTimeLeft(getTimeLeft());
+    tick(); // single setState call; no cascading renders
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
 
   if (dismissed) return null;
 
-  const over = timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+  const over =
+    timeLeft !== null &&
+    timeLeft.days === 0 &&
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0;
 
   return (
     <div className="relative flex items-center justify-center gap-3 bg-espresso px-4 py-2 sm:gap-5">
@@ -53,8 +62,18 @@ export function MarathonBar() {
         </span>
       </div>
 
-      {/* Countdown */}
-      {over ? (
+      {/* Countdown — null means server-rendered; show placeholder until client hydrates */}
+      {timeLeft === null ? (
+        <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-cream sm:gap-2">
+          <Segment value="--" label="days" />
+          <Colon />
+          <Segment value="--" label="hrs" />
+          <Colon />
+          <Segment value="--" label="min" />
+          <Colon />
+          <Segment value="--" label="sec" />
+        </div>
+      ) : over ? (
         <span className="text-xs font-bold uppercase tracking-wider text-cream/80">
           Registration is now closed
         </span>
@@ -70,7 +89,7 @@ export function MarathonBar() {
         </div>
       )}
 
-      {/* Register CTA */}
+      {/* Register CTA — always visible until countdown is confirmed over */}
       {!over && (
         <Link
           href="/marathon"
