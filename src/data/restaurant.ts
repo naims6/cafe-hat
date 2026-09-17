@@ -8,8 +8,8 @@ export const restaurantInfo: RestaurantInfo = {
   address: 'Dhanbari, Tangail',
   city: 'Dhanbari, Tangail',
   country: 'Bangladesh',
-  phone: '+880 1700-000000',
-  phoneHref: 'tel:+8801700000000',
+  phone: '+880 1712-258348',
+  phoneHref: 'tel:+8801712258348',
   email: 'hello@cafehat.com',
   hours: [
     { day: 'Saturday', time: '9:00 AM — 11:00 PM' },

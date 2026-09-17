@@ -1,36 +1,44 @@
-'use client';
+"use client";
 
-import { motion, useReducedMotion } from 'framer-motion';
-import Image from 'next/image';
-import { Flame, Star } from 'lucide-react';
-import type { MenuItem } from '@/types/restaurant';
-import { cn } from '@/lib/utils';
+import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import { Flame, Star, ShoppingBag } from "lucide-react";
+import type { MenuItem } from "@/types/restaurant";
+import { triggerToast } from "@/lib/toast";
+import { cn } from "@/lib/utils";
 
 interface MenuCardProps {
   item: MenuItem;
-  size?: 'large' | 'medium' | 'small';
+  size?: "large" | "medium" | "small";
   className?: string;
 }
 
 const categoryLabels: Record<string, string> = {
-  food: 'Food',
-  coffee: 'Coffee',
-  drinks: 'Drinks',
-  desserts: 'Desserts',
+  food: "Food",
+  coffee: "Coffee",
+  drinks: "Drinks",
+  desserts: "Desserts",
 };
 
 export function MenuCard({ item, className }: MenuCardProps) {
   const shouldReduceMotion = useReducedMotion();
 
+  const handleOrderClick = () => {
+    triggerToast(
+      "Online Ordering Coming Soon!",
+      `Online ordering for ${item.name} is coming soon! Please call +880 1712-258348 for further assistance.`,
+    );
+  };
+
   return (
     <motion.article
       initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'group flex flex-col overflow-hidden rounded-2xl border border-espresso/10 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-espresso/20',
-        className
+        "group flex flex-col overflow-hidden rounded-2xl border border-espresso/10 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-espresso/20",
+        className,
       )}
     >
       {/* Image Container with Consistent Aspect Ratio */}
@@ -84,14 +92,18 @@ export function MenuCard({ item, className }: MenuCardProps) {
           </p>
         </div>
 
-        {/* Card Footer Line */}
+        {/* Card Footer Line with Order Button */}
         <div className="mt-4 flex items-center justify-between border-t border-espresso/5 pt-3">
           <span className="text-[11px] font-bold uppercase tracking-wider text-espresso/40">
             Cafe Hat Specialty
           </span>
-          <span className="text-xs font-black uppercase tracking-wider text-tomato group-hover:translate-x-1 transition-transform">
-            View Details →
-          </span>
+          <button
+            onClick={handleOrderClick}
+            className="inline-flex items-center gap-1.5 rounded-full bg-tomato px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-xs transition-all duration-300 hover:bg-tomato-dark hover:shadow-md active:scale-95 cursor-pointer"
+          >
+            <ShoppingBag className="h-3.5 w-3.5" />
+            <span>Order →</span>
+          </button>
         </div>
       </div>
     </motion.article>

@@ -2,8 +2,9 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
-import { MapPin, Star, ArrowRight, Sparkles, Heart } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Heart } from 'lucide-react';
 import type { HeroData } from '@/types/restaurant';
+import { triggerToast } from '@/lib/toast';
 
 interface HeroProps {
   data: HeroData;
@@ -11,6 +12,13 @@ interface HeroProps {
 
 export function Hero({ data }: HeroProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  const handleOrderClick = () => {
+    triggerToast(
+      'Online Ordering Coming Soon!',
+      'Online ordering is coming soon! Please call us or visit to place your order.'
+    );
+  };
 
   const container = {
     hidden: { opacity: 0 },
@@ -94,12 +102,12 @@ export function Hero({ data }: HeroProps) {
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
 
-            <a
-              href={data.secondaryCta.href}
-              className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-espresso bg-white/60 px-8 py-4 text-sm font-extrabold uppercase tracking-wider text-espresso transition-all duration-300 hover:bg-espresso hover:text-cream hover:shadow-md"
+            <button
+              onClick={handleOrderClick}
+              className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-espresso bg-white/60 px-8 py-4 text-sm font-extrabold uppercase tracking-wider text-espresso transition-all duration-300 hover:bg-espresso hover:text-cream hover:shadow-md cursor-pointer"
             >
               <span>{data.secondaryCta.label}</span>
-            </a>
+            </button>
           </motion.div>
 
           {/* Customer Reviews & Trust Line */}

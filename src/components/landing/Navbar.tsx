@@ -7,6 +7,7 @@ import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { navLinks } from '@/data/navigation';
 import { restaurantInfo } from '@/data/restaurant';
+import { triggerToast } from '@/lib/toast';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -19,6 +20,13 @@ export function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const handleOrderClick = () => {
+    triggerToast(
+      'Online Ordering Coming Soon!',
+      `Online ordering is coming soon! Please call ${restaurantInfo.phone} to place an order.`
+    );
+  };
 
   return (
     <>
@@ -84,13 +92,13 @@ export function Navbar() {
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <a
-              href="#reservation"
-              className="group hidden items-center gap-2 bg-tomato px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg sm:inline-flex"
+            <button
+              onClick={handleOrderClick}
+              className="group hidden items-center gap-2 bg-tomato px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-tomato-dark hover:shadow-lg sm:inline-flex cursor-pointer"
             >
               Order Now
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </a>
+            </button>
             <button
               onClick={() => setMobileOpen(true)}
               className={cn(
@@ -164,13 +172,15 @@ export function Navbar() {
                 ))}
               </div>
               <div className="border-t border-espresso/10 px-5 py-6">
-                <a
-                  href="#reservation"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex w-full items-center justify-center gap-2 bg-tomato px-5 py-3.5 text-base font-bold uppercase tracking-wider text-cream"
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleOrderClick();
+                  }}
+                  className="flex w-full items-center justify-center gap-2 bg-tomato px-5 py-3.5 text-base font-bold uppercase tracking-wider text-cream cursor-pointer"
                 >
                   Order Now →
-                </a>
+                </button>
                 <a
                   href={restaurantInfo.phoneHref}
                   className="mt-3 flex w-full items-center justify-center gap-2 text-sm font-bold text-espresso/60"

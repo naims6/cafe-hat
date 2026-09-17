@@ -10,6 +10,7 @@ import { Testimonials } from "@/components/landing/Testimonials";
 import { ReservationCTA } from "@/components/landing/ReservationCTA";
 import { Location } from "@/components/landing/Location";
 import { Footer } from "@/components/landing/Footer";
+import { ToastContainer } from "@/components/shared/ToastContainer";
 
 import { heroData } from "@/data/hero";
 import { marqueeItems } from "@/data/marquee";
@@ -21,6 +22,7 @@ import { testimonials } from "@/data/testimonials";
 export default function Home() {
   return (
     <main className="min-h-screen bg-cream">
+      <ToastContainer />
       <Navbar />
       <Hero data={heroData} />
       <Marquee items={marqueeItems} />

@@ -5,10 +5,18 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Phone } from 'lucide-react';
 import { restaurantInfo } from '@/data/restaurant';
 import { Container } from '@/components/shared/Container';
+import { triggerToast } from '@/lib/toast';
 import { DecorativeShape } from '@/components/shared/DecorativeShape';
 
 export function ReservationCTA() {
   const shouldReduceMotion = useReducedMotion();
+
+  const handleOrderClick = () => {
+    triggerToast(
+      'Online Ordering Coming Soon!',
+      `Online ordering is coming soon! Please call ${restaurantInfo.phone} to place an order.`
+    );
+  };
 
   return (
     <section id="reservation" className="relative overflow-hidden py-0">
@@ -68,13 +76,13 @@ export function ReservationCTA() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <a
-              href="#reservation"
-              className="group inline-flex items-center justify-center gap-2 bg-cream px-8 py-4 text-base font-bold uppercase tracking-wider text-tomato transition-all duration-300 hover:bg-sunny hover:text-espresso hover:shadow-2xl"
+            <button
+              onClick={handleOrderClick}
+              className="group inline-flex items-center justify-center gap-2 bg-cream px-8 py-4 text-base font-bold uppercase tracking-wider text-tomato transition-all duration-300 hover:bg-sunny hover:text-espresso hover:shadow-2xl cursor-pointer"
             >
-              BOOK A TABLE
+              Order Now
               <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-            </a>
+            </button>
             <a
               href={restaurantInfo.phoneHref}
               className="group inline-flex items-center justify-center gap-2 border-2 border-cream px-8 py-4 text-base font-bold uppercase tracking-wider text-cream transition-all duration-300 hover:bg-cream hover:text-tomato"
