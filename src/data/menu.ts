@@ -78,7 +78,7 @@ export const featuredMenuItems: MenuItem[] = [
     price: 250,
     category: "food",
     image:
-      "https://res.cloudinary.com/dynxnpj21/image/upload/v1789658095/499929022_1094810092667564_6752206686177155216_n_fzkgdv.jpg0",
+      "https://res.cloudinary.com/dynxnpj21/image/upload/v1789658095/499929022_1094810092667564_6752206686177155216_n_fzkgdv.jpg",
     imageAlt: "Vibrant cocktails with fresh fruit on a wooden table",
   },
   {

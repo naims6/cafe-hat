@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Maximize2, Sparkles } from 'lucide-react';
 import type { GalleryItem, GalleryCategory } from '@/types/restaurant';
 import { Container } from '@/components/shared/Container';
 import { SectionHeading } from '@/components/shared/SectionHeading';
@@ -21,18 +21,6 @@ const filterCategories: { label: string; value: GalleryCategory | 'all' }[] = [
   { label: 'Moments', value: 'moments' },
 ];
 
-const spanClasses: Record<string, string> = {
-  tall: 'row-span-2',
-  wide: 'col-span-2',
-  normal: '',
-};
-
-const aspectClasses: Record<string, string> = {
-  portrait: 'aspect-[3/4]',
-  landscape: 'aspect-[4/3]',
-  square: 'aspect-square',
-};
-
 export function Gallery({ items }: GalleryProps) {
   const [active, setActive] = useState<GalleryCategory | 'all'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -44,23 +32,47 @@ export function Gallery({ items }: GalleryProps) {
   }, [items, active]);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+
   const nextImage = useCallback(() => {
     setLightboxIndex((prev) => (prev === null ? null : (prev + 1) % filtered.length));
   }, [filtered.length]);
+
   const prevImage = useCallback(() => {
     setLightboxIndex((prev) => (prev === null ? null : (prev - 1 + filtered.length) % filtered.length));
   }, [filtered.length]);
 
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, closeLightbox, nextImage, prevImage]);
+
   return (
-    <section id="gallery" className="relative overflow-hidden bg-cream py-20 lg:py-28">
-      <Container>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+    <section id="gallery" className="relative overflow-hidden bg-cream py-16 sm:py-24 lg:py-28">
+      {/* Background Soft Orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-sunny/10 blur-3xl" />
+        <div className="absolute right-0 bottom-20 h-80 w-80 rounded-full bg-tomato/8 blur-3xl" />
+      </div>
+
+      <Container className="relative">
+        {/* Header & Filter Row */}
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading
-            eyebrow="Gallery"
-            title="Moments worth saving."
+            eyebrow="OUR GALLERY"
+            title="Moments Worth Saving"
+            subtitle="Explore our cozy dining ambience, fresh delicious meals, and memorable cafe moments."
           />
-          {/* Filters */}
-          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
+
+          {/* Filter Pills */}
+          <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible">
             {filterCategories.map((cat) => {
               const isActive = active === cat.value;
               return (
@@ -68,10 +80,10 @@ export function Gallery({ items }: GalleryProps) {
                   key={cat.value}
                   onClick={() => setActive(cat.value)}
                   className={cn(
-                    'shrink-0 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300',
+                    'relative shrink-0 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-all duration-300',
                     isActive
-                      ? 'bg-tomato text-cream'
-                      : 'bg-espresso/5 text-espresso/60 hover:bg-espresso/10'
+                      ? 'bg-espresso text-cream shadow-md'
+                      : 'bg-white border border-espresso/10 text-espresso/70 hover:border-espresso/30 hover:text-espresso'
                   )}
                 >
                   {cat.label}
@@ -81,50 +93,61 @@ export function Gallery({ items }: GalleryProps) {
           </div>
         </div>
 
-        {/* Masonry grid */}
+        {/* Clean Balanced Gallery Grid */}
         <motion.div
           layout
-          className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4"
+          className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((item, i) => (
-              <motion.button
+              <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => setLightboxIndex(i)}
-                className={cn(
-                  'group relative overflow-hidden',
-                  aspectClasses[item.aspect],
-                  spanClasses[item.span]
-                )}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
               >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 flex flex-col items-start justify-end bg-gradient-to-t from-espresso/80 via-espresso/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="bg-sunny px-2 py-1 text-xs font-bold uppercase tracking-wider text-espresso">
-                    {item.category}
-                  </span>
-                  <span className="mt-2 text-lg font-bold uppercase tracking-wider text-cream">
-                    View →
-                  </span>
+                <div
+                  onClick={() => setLightboxIndex(i)}
+                  className="group relative aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-2xl border border-espresso/10 bg-cream-dark shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-espresso/20"
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+
+                  {/* Top Category Badge */}
+                  <div className="absolute left-3 top-3 z-10">
+                    <span className="rounded-full bg-espresso/90 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-cream backdrop-blur-md shadow-sm">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  {/* Dark Hover Gradient & Maximize Icon */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-t from-espresso/80 via-espresso/20 to-transparent opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    <div className="flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-black uppercase tracking-wider text-espresso shadow-xl transform scale-90 transition-transform duration-300 group-hover:scale-100">
+                      <Maximize2 className="h-4 w-4 text-tomato" />
+                      <span>View Full Image</span>
+                    </div>
+                  </div>
                 </div>
-              </motion.button>
+              </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {filtered.length === 0 && (
+          <div className="mt-12 rounded-2xl border border-dashed border-espresso/20 py-12 text-center text-espresso/60 font-medium">
+            No items in this category.
+          </div>
+        )}
       </Container>
 
-      {/* Lightbox */}
+      {/* Full Screen Lightbox Modal */}
       <AnimatePresence>
         {lightboxIndex !== null && filtered[lightboxIndex] && (
           <motion.div
@@ -132,58 +155,89 @@ export function Gallery({ items }: GalleryProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-espresso/90 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-between bg-black/92 p-4 sm:p-6 backdrop-blur-md select-none"
             onClick={closeLightbox}
           >
-            {/* Close button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center text-cream transition-colors hover:text-tomato"
-              aria-label="Close"
-            >
-              <X className="h-7 w-7" />
-            </button>
-
-            {/* Prev */}
-            <button
-              onClick={(e) => { e.stopPropagation(); prevImage(); }}
-              className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-cream transition-colors hover:text-sunny"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="h-8 w-8" />
-            </button>
-
-            {/* Next */}
-            <button
-              onClick={(e) => { e.stopPropagation(); nextImage(); }}
-              className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-cream transition-colors hover:text-sunny"
-              aria-label="Next"
-            >
-              <ChevronRight className="h-8 w-8" />
-            </button>
-
-            {/* Image */}
-            <motion.div
-              key={filtered[lightboxIndex].id}
-              initial={shouldReduceMotion ? false : { scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="relative h-[75vh] w-[90vw] max-w-4xl overflow-hidden"
+            {/* Top Bar inside Lightbox */}
+            <div
+              className="flex w-full max-w-6xl items-center justify-between py-2 text-white z-20"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={filtered[lightboxIndex].src}
-                alt={filtered[lightboxIndex].alt}
-                fill
-                sizes="90vw"
-                className="object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-espresso/70 p-4">
-                <span className="bg-sunny px-2 py-1 text-xs font-bold uppercase tracking-wider text-espresso">
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-tomato px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-white">
                   {filtered[lightboxIndex].category}
                 </span>
+                <span className="text-xs font-bold text-white/70">
+                  {lightboxIndex + 1} of {filtered.length}
+                </span>
               </div>
-            </motion.div>
+
+              {/* Close Button */}
+              <button
+                onClick={closeLightbox}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-tomato hover:scale-105 active:scale-95"
+                aria-label="Close modal"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Main Lightbox Content Area */}
+            <div
+              className="relative flex h-[75vh] w-full max-w-5xl items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Prev Button */}
+              <button
+                onClick={prevImage}
+                className="absolute left-2 sm:-left-6 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:text-espresso hover:scale-110 active:scale-95"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-7 w-7" />
+              </button>
+
+              {/* Full Image Container - Displays complete uncropped image with object-contain */}
+              <div className="relative h-full w-full">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={filtered[lightboxIndex].id}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative h-full w-full"
+                  >
+                    <Image
+                      src={filtered[lightboxIndex].src}
+                      alt={filtered[lightboxIndex].alt}
+                      fill
+                      priority
+                      sizes="100vw"
+                      className="object-contain"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={nextImage}
+                className="absolute right-2 sm:-right-6 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:text-espresso hover:scale-110 active:scale-95"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-7 w-7" />
+              </button>
+            </div>
+
+            {/* Bottom Caption Bar */}
+            <div
+              className="w-full max-w-2xl rounded-2xl bg-white/10 px-6 py-3 text-center backdrop-blur-md z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-sm font-semibold text-white/90">
+                {filtered[lightboxIndex].alt}
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
